@@ -8,6 +8,7 @@
 <br/>
 
 ## 📊 Performance Metrics & System Logs
+<img width="975" height="509" alt="image" src="https://github.com/user-attachments/assets/da00b32d-2b16-4574-a3df-d2f5b55873e9" />
 <img width="3840" height="1080" alt="image" src="https://github.com/user-attachments/assets/e3373d5c-13de-4763-b3a8-f88d8c302a73" />
 <img width="3840" height="1059" alt="image" src="https://github.com/user-attachments/assets/055ee063-5f73-4116-bc4c-cc370ec22fc0" />
 
