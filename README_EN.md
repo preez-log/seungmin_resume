@@ -130,7 +130,7 @@ The entire loop runs across three threads with zero mutexes.
 
 | Category | Stack |
 |---|---|
-| Language | C++20, x64 Assembly (MASM), Lua 5.4 |
+| Language | C++20, x64 Assembly (MASM) |
 | Graphics | Direct3D 11, DirectWrite, Direct2D |
 | Audio | ASIO SDK, WASAPI (Exclusive / Shared), AVRT |
 | System | Windows WDM Kernel Driver, AMD SVM (Hardware Virtualization) |
