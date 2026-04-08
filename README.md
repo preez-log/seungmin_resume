@@ -1,5 +1,7 @@
 # Delta Portfolio — Systems & Engine Programming
 
+![USPTO](https://img.shields.io/badge/USPTO-Patent%20Pending-005A9C?style=for-the-badge)
+
 **Notice: Core Source Code is Private**
 
 This repository is a portfolio showcase.
