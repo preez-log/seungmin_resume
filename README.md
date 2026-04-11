@@ -5,6 +5,8 @@
 
 Application #19/641,687 — Method and System for Audiovisual Synchronization and Render Latency Minimization via Hardware Clock Domain Bridging
 
+<br/>
+
 **Notice: Core Source Code is Private**
 
 This repository is a portfolio showcase.
