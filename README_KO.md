@@ -2,6 +2,10 @@
 
 ![USPTO](https://img.shields.io/badge/USPTO-Patent%20Pending-005A9C?style=for-the-badge)
 
+Application #19/641,687 — Method and System for Audiovisual Synchronization and Render Latency Minimization via Hardware Clock Domain Bridging
+
+<br/>
+
 **코어 소스코드 비공개 안내**
 
 본 레포지토리는 포트폴리오 쇼케이스용 공간입니다.
@@ -128,6 +132,27 @@
 
 ---
 
+### Delta Tracker — 실시간 손 추적 ML 파이프라인
+
+> MediaPipe TFLite 모델을 C API로 직접 구동하는 실시간 손 추적 파이프라인. Python 없음, 프레임워크 추상화 없음. VTuber 모션 캡처 상업화를 목표로 설계된 기반 시스템.
+
+
+- **커스텀 SSD 앵커 디코딩** : 모델의 [1, 2016, 18] 리그레서 출력에 맞는 Palm Detection 앵커 그리드를 처음부터 직접 생성. IoU + Containment 기반 NMS로 중복 검출 제거.
+
+- **2단계 추론 파이프라인** : Palm Detection(192×192) → ROI 크롭 → Hand Landmark(224×224, 21 키포인트 × 3축). 트래킹 소실 / 주기 / 연속 랜드마크 실패 시 적응형 재검출, 안정적일 때는 전체 검출 스킵.
+
+- **4단계 필터 체인** : 랜드마크 출력 → (1) 2D 칼만 필터(위치+속도 상태, SoA 레이아웃 2×2 공분산) → (2) Post-Kalman Gate(EMA 전파 전 미세 변동 차단) → (3) EMA 로우패스 → (4) 스냅 데드존(임계 미만 변화 완전 억제). 전 단계가 21 키포인트 × 3축에 대한 SoA 배치 연산.
+
+- **Lock-Free 트리플 버퍼 아키텍처** : 캡처/추론 스레드가 TrackingSnapshot을 트리플 버퍼 atomic swap으로 기록. 렌더 스레드는 독립적으로 최신 스냅샷만 읽어 표시 — 추론 속도가 렌더를 블로킹하지 않음.
+
+- **Zero-Allocation 추론 루프** : cv::Mat 프레임 간 재사용(프레임별 할당 없음). 스택 기반 padded_buffer_로 랜드마크 파싱 중 힙 할당 없음. NMS 벡터(det_buf_, nms_rects_) clear로 재사용.
+
+- **FramePool** : Lock-Free 카메라 프레임 풀로 캡처 타이밍과 렌더 타이밍 분리. 렌더 스레드는 항상 최신 프레임을 티어링 없이 수신.
+
+<br/>
+
+---
+
 ## 🛠️ Tech Stack
 
 |   Category  |        Stack        |
@@ -141,6 +166,7 @@
 | Networking  | Binance WebSocket, simdjson                                   |
 | Database    | SQLite (WAL mode, Prepared Statement)                         |
 | Platform    | Windows 10/11 x64, Linux (Ubuntu)                             |
+| ML / CV | TFLite C API, OpenCV, MediaPipe (Palm Detection, Hand Landmark)   |
 
 <br/>
 
@@ -153,4 +179,5 @@ Delta_Engine/     — Custom D3D11 game engine + BMS rhythm game
 Delta_Cast/       — Virtual ASIO driver + WASAPI loopback renderer
 delta_hft/        — AMD64 Linux HFT trading bot (Binance Futures)
 Delta_Visor/      — AMD SVM Type-1 hypervisor kernel driver (.sys)
+Delta_Tracker/    — Real-time hand tracking ML pipeline (TFLite + OpenCV)
 ```
