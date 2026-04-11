@@ -2,7 +2,6 @@
 
 ![USPTO](https://img.shields.io/badge/USPTO-Patent%20Pending-005A9C?style=for-the-badge)
 
-
 Application #19/641,687 — Method and System for Audiovisual Synchronization and Render Latency Minimization via Hardware Clock Domain Bridging
 
 <br/>
@@ -130,6 +129,8 @@ The entire loop runs across three threads with zero mutexes.
 - **GS Base Preservation** : `MSR_GS_BASE` (the Windows KPCR pointer) is backed up into R15 across the host loop and restored on unload, preventing kernel crash from a corrupted GS Base after VMEXIT.
 
 <br/>
+
+---
 
 ### Delta Tracker — Real-Time Hand Tracking ML Pipeline
 
