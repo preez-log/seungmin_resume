@@ -131,17 +131,17 @@ The entire loop runs across three threads with zero mutexes.
 
 <br/>
 
-Delta Tracker — Real-Time Hand Tracking ML Pipeline
+### Delta Tracker — Real-Time Hand Tracking ML Pipeline
 
-A from-scratch real-time hand tracking pipeline built on MediaPipe's TFLite models via the C API — no Python, no framework abstractions. Designed as the foundation for a commercial VTuber motion capture solution.
+> A from-scratch real-time hand tracking pipeline built on MediaPipe's TFLite models via the C API — no Python, no framework abstractions. Designed as the foundation for a commercial VTuber motion capture solution.
 
 
-Custom SSD Anchor Decoding : Palm detection anchor grid generated from scratch matching the model's [1, 2016, 18] regressor output. IoU + containment-based NMS removes duplicate detections post-inference.
-Two-Stage Inference Pipeline : Palm Detection (192×192 input) → ROI crop → Hand Landmark (224×224 input, 21 keypoints × 3 axes). Adaptive re-detection triggers on tracking loss, interval, or consecutive landmark failure — skips full detection when tracking is stable.
-4-Stage Filter Chain : Raw landmark output passes through: (1) 2D Kalman filter (position + velocity state, full 2×2 covariance in SoA layout) → (2) Post-Kalman gate (suppresses micro-jitter before EMA propagation) → (3) EMA low-pass → (4) Snap deadzone (sub-threshold deltas clamped to zero). All stages operate as SoA batch ops over all 21 keypoints × 3 axes simultaneously.
+- **Custom SSD Anchor Decoding** : Palm detection anchor grid generated from scratch matching the model's [1, 2016, 18] regressor output. IoU + containment-based NMS removes duplicate detections post-inference.
+- **Two-Stage Inference Pipeline** : Palm Detection (192×192 input) → ROI crop → Hand Landmark (224×224 input, 21 keypoints × 3 axes). Adaptive re-detection triggers on tracking loss, interval, or consecutive landmark failure — skips full detection when tracking is stable.
+- **4-Stage Filter Chain** : Raw landmark output passes through: (1) 2D Kalman filter (position + velocity state, full 2×2 covariance in SoA layout) → (2) Post-Kalman gate (suppresses micro-jitter before EMA propagation) → (3) EMA low-pass → (4) Snap deadzone (sub-threshold deltas clamped to zero). All stages operate as SoA batch ops over all 21 keypoints × 3 axes simultaneously.
 Lock-Free Triple-Buffered Architecture : Capture/Inference thread writes TrackingSnapshot via triple buffer atomic swap. Render thread reads the latest snapshot independently — inference speed never blocks display.
-Zero-Allocation Inference Loop : cv::Mat reused across frames (no per-frame allocation). Pre-allocated padded_buffer_ on the BinanceMarket-style stack avoids heap during JSON/landmark parsing. Reusable NMS vectors (det_buf_, nms_rects_) cleared without deallocation.
-FramePool : Lock-free camera frame pool decouples capture timing from render timing. Render thread always gets the latest frame without tearing.
+- **Zero-Allocation Inference Loop** : cv::Mat reused across frames (no per-frame allocation). Pre-allocated padded_buffer_ on the BinanceMarket-style stack avoids heap during JSON/landmark parsing. Reusable NMS vectors (det_buf_, nms_rects_) cleared without deallocation.
+- **FramePool** : Lock-free camera frame pool decouples capture timing from render timing. Render thread always gets the latest frame without tearing.
 
 <br/>
 
@@ -160,6 +160,7 @@ FramePool : Lock-free camera frame pool decouples capture timing from render tim
 | Networking | Binance WebSocket, simdjson |
 | Database | SQLite (WAL mode, Prepared Statement) |
 | Platform | Windows 10/11 x64, Linux (Ubuntu) |
+| ML / CV | TFLite C API, OpenCV, MediaPipe (Palm Detection, Hand Landmark) |
 
 <br/>
 
@@ -172,4 +173,5 @@ Delta_Engine/     — Custom D3D11 game engine + BMS rhythm game
 Delta_Cast/       — Virtual ASIO driver + WASAPI loopback renderer
 delta_hft/        — AMD64 Linux HFT trading bot (Binance Futures)
 Delta_Visor/      — AMD SVM Type-1 hypervisor kernel driver (.sys)
+Delta_Tracker/    — Real-time hand tracking ML pipeline (TFLite + OpenCV)
 ```
