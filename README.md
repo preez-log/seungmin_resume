@@ -1,6 +1,7 @@
 # Delta Portfolio — Systems & Engine Programming
 
 ![USPTO](https://img.shields.io/badge/USPTO-Patent%20Pending-005A9C?style=for-the-badge)
+Application #19/641,687 — Method and System for Audiovisual Synchronization and Render Latency Minimization via Hardware Clock Domain Bridging
 
 **Notice: Core Source Code is Private**
 
@@ -123,6 +124,20 @@ The entire loop runs across three threads with zero mutexes.
 - **GDT Parsing & x64 Segment Handling** : `FillSegmentDescriptor` detects system segments (TSS/LDT) via the `S` bit and reads the additional 32-bit base from the 128-bit x64 GDT entry format. Granularity-bit-based limit expansion handled correctly.
 
 - **GS Base Preservation** : `MSR_GS_BASE` (the Windows KPCR pointer) is backed up into R15 across the host loop and restored on unload, preventing kernel crash from a corrupted GS Base after VMEXIT.
+
+<br/>
+
+Delta Tracker — Real-Time Hand Tracking ML Pipeline
+
+A from-scratch real-time hand tracking pipeline built on MediaPipe's TFLite models via the C API — no Python, no framework abstractions. Designed as the foundation for a commercial VTuber motion capture solution.
+
+
+Custom SSD Anchor Decoding : Palm detection anchor grid generated from scratch matching the model's [1, 2016, 18] regressor output. IoU + containment-based NMS removes duplicate detections post-inference.
+Two-Stage Inference Pipeline : Palm Detection (192×192 input) → ROI crop → Hand Landmark (224×224 input, 21 keypoints × 3 axes). Adaptive re-detection triggers on tracking loss, interval, or consecutive landmark failure — skips full detection when tracking is stable.
+4-Stage Filter Chain : Raw landmark output passes through: (1) 2D Kalman filter (position + velocity state, full 2×2 covariance in SoA layout) → (2) Post-Kalman gate (suppresses micro-jitter before EMA propagation) → (3) EMA low-pass → (4) Snap deadzone (sub-threshold deltas clamped to zero). All stages operate as SoA batch ops over all 21 keypoints × 3 axes simultaneously.
+Lock-Free Triple-Buffered Architecture : Capture/Inference thread writes TrackingSnapshot via triple buffer atomic swap. Render thread reads the latest snapshot independently — inference speed never blocks display.
+Zero-Allocation Inference Loop : cv::Mat reused across frames (no per-frame allocation). Pre-allocated padded_buffer_ on the BinanceMarket-style stack avoids heap during JSON/landmark parsing. Reusable NMS vectors (det_buf_, nms_rects_) cleared without deallocation.
+FramePool : Lock-free camera frame pool decouples capture timing from render timing. Render thread always gets the latest frame without tearing.
 
 <br/>
 
