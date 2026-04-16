@@ -6,15 +6,6 @@ Application #19/641,687 — Method and System for Audiovisual Synchronization an
 
 <br/>
 
-**코어 소스코드 비공개 안내**
-
-본 레포지토리는 포트폴리오 쇼케이스용 공간입니다.
-커스텀 D3D11 게임 엔진, 커널 레벨 가상 오디오 드라이버, AMD SVM 하이퍼바이저, 그리고 HFT 알고리즘 트레이딩 봇의
-핵심 소스코드는 지적재산권(IP) 보호 및 보안상의 이유로 Private 처리되어 있습니다.
-*상세 코드는 입사 지원 시 제출된 압축 파일(ZIP)을 통해 확인하실 수 있습니다.*
-
-<br/>
-
 ## Performance Metrics & System Logs
 
 <img width="975" height="509" alt="image" src="https://github.com/user-attachments/assets/da00b32d-2b16-4574-a3df-d2f5b55873e9" />
@@ -26,6 +17,15 @@ Application #19/641,687 — Method and System for Audiovisual Synchronization an
 ---
 
 ## Core Architecture & Features
+
+<br/>
+
+**코어 소스코드 비공개 안내**
+
+본 레포지토리는 포트폴리오 쇼케이스용 공간입니다.
+커스텀 D3D11 게임 엔진, 커널 레벨 가상 오디오 드라이버, AMD SVM 하이퍼바이저, 그리고 HFT 알고리즘 트레이딩 봇의
+핵심 소스코드는 지적재산권(IP) 보호 및 보안상의 이유로 Private 처리되어 있습니다.
+*상세 코드는 입사 지원 시 제출된 압축 파일(ZIP)을 통해 확인하실 수 있습니다.*
 
 <br/>
 
